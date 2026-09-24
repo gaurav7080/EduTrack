@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Profile</h1>
+  <form action="/profile/update" method="post">
+    <label>Name</label>
+    <input type="text" name="name" value="{{ user.name }}" required>
+    <label>Email (read-only)</label>
+    <input type="email" value="{{ user.email }}" readonly>
+    <label>Course</label>
+    <input type="text" name="course" value="{{ user.course }}">
+    <label>Semester</label>
+    <input type="text" name="semester" value="{{ user.semester }}">
+    <button type="submit">Update Profile</button>
+  </form>
+{% endblock %}

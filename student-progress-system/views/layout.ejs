@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <title><%= pageTitle || 'Student Progress' %> · Student Progress</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="/static/js/script.js" defer></script>
+</head>
+<body>
+  <% if (currentUser) { %><%- include('partials/header') %><% } %>
+  <main class="<%= currentUser ? 'page-shell' : 'auth-shell' %>">
+    <% if (messages) { Object.keys(messages).forEach(function(k){ messages[k].forEach(function(m){ %>
+      <div class="flash flash-<%= k %>" data-flash><span><%= m %></span><button type="button" onclick="this.parentElement.remove()">×</button></div>
+    <% }) }) } %>
+    <%- body %>
+  </main>
+  <% if (currentUser) { %>
+  <footer class="footer">© <%= new Date().getFullYear() %> Student Progress · Built for focused learning</footer>
+  <% } %>
+</body>
+</html>

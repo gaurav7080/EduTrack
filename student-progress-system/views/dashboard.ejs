@@ -1,0 +1,51 @@
+<div class="page-heading">
+  <div><span class="eyebrow">OVERVIEW · <%= formatDate(today) %></span><h1>Good to see you, <%= name.split(' ')[0] %> 👋</h1><p class="muted">Here’s your academic progress at a glance.</p></div>
+  <a class="btn btn-primary" href="/goals">+ Add a goal</a>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card accent"><div class="stat-icon">◎</div><span>Today's goals</span><strong><%= todaysTotal %></strong><small><%= todaysCompleted %> completed</small></div>
+  <div class="stat-card"><div class="stat-icon green">✓</div><span>Completed</span><strong><%= todaysCompleted %></strong><small>today</small></div>
+  <div class="stat-card"><div class="stat-icon amber">◷</div><span>Pending</span><strong><%= todaysPending %></strong><small>needs attention</small></div>
+  <div class="stat-card"><div class="stat-icon purple">▣</div><span>Materials</span><strong><%= materialCount %></strong><small>uploaded</small></div>
+</div>
+
+<div class="content-grid">
+  <section class="panel">
+    <div class="panel-head"><div><h2>Today's goals</h2><p class="muted">Stay consistent, one task at a time.</p></div><a class="text-link" href="/goals">View all →</a></div>
+    <% if (todaysGoals.length) { %>
+      <div class="goal-list">
+      <% todaysGoals.forEach(g => { %>
+        <div class="goal-row <%= g.status === 'completed' ? 'done' : '' %>">
+          <form action="/goals/toggle/<%= g.id %>" method="post"><button class="check <%= g.status === 'completed' ? 'checked' : '' %>" aria-label="Toggle goal"><%= g.status === 'completed' ? '✓' : '' %></button></form>
+          <div class="goal-info"><strong><%= g.title %></strong><span><%= g.subject || 'General' %> · <%= g.target_minutes || 0 %> min</span></div>
+          <a class="icon-link" href="/goals/edit/<%= g.id %>">Edit</a>
+        </div>
+      <% }) %>
+      </div>
+    <% } else { %>
+      <div class="empty-state"><div class="empty-icon">✓</div><h3>No goals for today</h3><p>Add your first study goal and make today count.</p><a class="btn btn-secondary" href="/goals">Create goal</a></div>
+    <% } %>
+  </section>
+
+  <section class="panel progress-panel">
+    <div class="panel-head"><div><h2>Weekly progress</h2><p class="muted"><%= formatDate(weekStart) %> — <%= formatDate(weekEnd) %></p></div></div>
+    <div class="ring" style="--value:<%= weeklyProgress %>%"><div><strong><%= weeklyProgress %>%</strong><span>complete</span></div></div>
+    <p class="progress-message"><%= weeklyProgress >= 80 ? 'Excellent consistency. Keep the momentum.' : weeklyProgress >= 50 ? 'Good progress. A little more consistency will help.' : 'Start small today and build your streak.' %></p>
+    <a class="btn btn-secondary btn-full" href="/analysis">View detailed analysis</a>
+  </section>
+</div>
+
+<section class="panel">
+  <div class="panel-head"><div><h2>Recent materials</h2><p class="muted">Your latest study resources.</p></div><a class="text-link" href="/materials">Manage materials →</a></div>
+  <% if (recentMaterials.length) { %>
+    <div class="material-mini-grid">
+      <% recentMaterials.forEach(m => { %>
+      <a class="material-mini" href="/materials/download/<%= m.id %>">
+        <span class="file-icon"><%= m.material_type === 'PYQ' ? 'P' : m.material_type === 'Notes' ? 'N' : m.material_type === 'Assignment' ? 'A' : 'F' %></span>
+        <span><strong><%= m.title %></strong><small><%= m.subject || 'General' %> · <%= m.material_type %></small></span><span>↓</span>
+      </a>
+      <% }) %>
+    </div>
+  <% } else { %><p class="muted">No materials yet. Upload notes, PYQs or assignments from the Materials page.</p><% } %>
+</section>

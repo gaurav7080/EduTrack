@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Materials</h1>
+
+  <section class="upload">
+    <h3>Upload Material</h3>
+    <form action="/materials/upload" method="post" enctype="multipart/form-data">
+      <label>Title</label>
+      <input type="text" name="title" required>
+      <label>Subject</label>
+      <input type="text" name="subject">
+      <label>Material Type</label>
+      <select name="material_type" required>
+        <option value="PYQ">PYQ</option>
+        <option value="Notes">Notes</option>
+        <option value="Assignment">Assignment</option>
+        <option value="Other">Other</option>
+      </select>
+      <label>File</label>
+      <input type="file" name="file" required>
+      <button type="submit">Upload</button>
+    </form>
+  </section>
+
+  <section class="search">
+    <h3>Search / Filter</h3>
+    <form method="get">
+      <input type="text" name="q" placeholder="Search title">
+      <input type="text" name="subject" placeholder="Subject">
+      <select name="type">
+        <option value="">All</option>
+        <option value="PYQ">PYQ</option>
+        <option value="Notes">Notes</option>
+        <option value="Assignment">Assignment</option>
+        <option value="Other">Other</option>
+      </select>
+      <button type="submit">Search</button>
+    </form>
+  </section>
+
+  <section>
+    <h3>Materials</h3>
+    {% if materials %}
+      <table class="table">
+        <tr><th>Title</th><th>Subject</th><th>Type</th><th>Uploaded</th><th>Actions</th></tr>
+        {% for m in materials %}
+          <tr>
+            <td>{{ m.title }}</td>
+            <td>{{ m.subject }}</td>
+            <td>{{ m.material_type }}</td>
+            <td>{{ m.uploaded_at }}</td>
+            <td>
+              <a href="/materials/download/{{ m.id }}">Download</a>
+              <form action="/materials/delete/{{ m.id }}" method="post" style="display:inline" onsubmit="return confirmDelete()">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>No materials uploaded yet.</p>
+    {% endif %}
+  </section>
+{% endblock %}

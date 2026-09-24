@@ -1,0 +1,23 @@
+{
+  "name": "student-progress-system",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Modern Student Progress & Academic Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.1",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.12.0",
+    "sanitize-filename": "^1.6.3"
+  }
+}

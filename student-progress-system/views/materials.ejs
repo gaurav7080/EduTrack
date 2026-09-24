@@ -1,0 +1,16 @@
+<div class="page-heading"><div><span class="eyebrow">RESOURCE LIBRARY</span><h1>Study materials</h1><p class="muted">Keep your notes, PYQs and assignments in one place.</p></div></div>
+<section class="panel upload-panel">
+<form action="/materials/upload" method="post" enctype="multipart/form-data" class="upload-form">
+<div class="upload-title"><span class="upload-icon">↑</span><div><h2>Upload a resource</h2><p class="muted">Maximum <%=maxUploadMb%> MB · PDF, DOC, PPT, JPG, PNG</p></div></div>
+<div class="form-grid three"><label>Title <input type="text" name="title" placeholder="Operating Systems Notes" required></label><label>Subject <input type="text" name="subject" placeholder="OS"></label><label>Type <select name="material_type" required><option value="Notes">Notes</option><option value="PYQ">PYQ</option><option value="Assignment">Assignment</option><option value="Other">Other</option></select></label></div>
+<div class="file-drop"><input id="fileInput" type="file" name="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png" required><span class="file-label"><b>Choose a file</b> or drag it here</span><small id="fileName">No file selected</small></div>
+<button class="btn btn-primary">Upload material</button>
+</form>
+</section>
+<section class="panel">
+<div class="panel-head"><div><h2>Your library</h2><p class="muted"><%=materials.length%> resource(s)</p></div></div>
+<form method="get" class="filter-bar"><input name="q" value="<%=filters.q%>" placeholder="Search title or filename"><input name="subject" value="<%=filters.subject%>" placeholder="Subject"><select name="type"><option value="">All types</option><option value="Notes" <%=filters.type==='Notes'?'selected':''%>>Notes</option><option value="PYQ" <%=filters.type==='PYQ'?'selected':''%>>PYQ</option><option value="Assignment" <%=filters.type==='Assignment'?'selected':''%>>Assignment</option><option value="Other" <%=filters.type==='Other'?'selected':''%>>Other</option></select><button class="btn btn-secondary">Search</button><%if(filters.q||filters.subject||filters.type){%><a class="clear-link" href="/materials">Clear</a><%}%></form>
+<%if(materials.length){%><div class="material-grid"><%materials.forEach(m=>{%>
+<article class="material-card"><div class="material-top"><span class="file-icon large"><%=m.material_type[0]%></span><span class="badge"><%=m.material_type%></span></div><h3><%=m.title%></h3><p><%=m.subject||'General'%></p><small><%=m.file_name%> · <%=formatDate(m.uploaded_at)%></small><div class="button-row"><a class="btn btn-secondary small" href="/materials/download/<%=m.id%>">Download</a><form action="/materials/delete/<%=m.id%>" method="post" onsubmit="return confirmDelete()"><button class="btn btn-danger small">Delete</button></form></div></article>
+<%})%></div><%}else{%><div class="empty-state"><div class="empty-icon">▣</div><h3>Your library is empty</h3><p>Upload your first study resource above.</p></div><%}%>
+</section>

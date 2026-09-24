@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Goals</h1>
+
+  <section class="add-goal">
+    <h3>Add Goal</h3>
+    <form action="/goals/add" method="post">
+      <label>Title</label>
+      <input type="text" name="title" required>
+      <label>Description</label>
+      <textarea name="description"></textarea>
+      <label>Subject</label>
+      <input type="text" name="subject">
+      <label>Date</label>
+      <input type="date" name="goal_date" required>
+      <label>Target Time (minutes)</label>
+      <input type="number" name="target_minutes">
+      <button type="submit">Add Goal</button>
+    </form>
+  </section>
+
+  <section>
+    <h3>All Goals</h3>
+    {% if goals %}
+      <table class="table">
+        <tr><th>Title</th><th>Subject</th><th>Date</th><th>Target</th><th>Status</th><th>Actions</th></tr>
+        {% for g in goals %}
+          <tr>
+            <td>{{ g.title }}</td>
+            <td>{{ g.subject }}</td>
+            <td>{{ g.goal_date }}</td>
+            <td>{{ g.target_minutes }} min</td>
+            <td>{{ g.status }}</td>
+            <td>
+              <a href="/goals/edit/{{ g.id }}">Edit</a>
+              <form action="/goals/delete/{{ g.id }}" method="post" style="display:inline" onsubmit="return confirmDelete()">
+                <button type="submit">Delete</button>
+              </form>
+              <form action="/goals/toggle/{{ g.id }}" method="post" style="display:inline">
+                <button type="submit">Toggle</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>No goals yet.</p>
+    {% endif %}
+  </section>
+
+  <section>
+    <h3>Today's Goal Review</h3>
+    {% if todays_goals %}
+      <ul class="review-list">
+        {% for g in todays_goals %}
+          <li>{{ g.title }} — <form style="display:inline" action="/goals/toggle/{{ g.id }}" method="post"><button type="submit">Mark</button></form></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No goals for today.</p>
+    {% endif %}
+  </section>
+{% endblock %}

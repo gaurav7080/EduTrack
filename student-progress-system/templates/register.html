@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="auth-card">
+    <h2>Register</h2>
+    <form method="post">
+      <label>Full Name</label>
+      <input type="text" name="name" required>
+      <label>Email</label>
+      <input type="email" name="email" required>
+      <label>Password</label>
+      <input type="password" name="password" required>
+      <label>Course</label>
+      <input type="text" name="course" required>
+      <label>Semester</label>
+      <input type="text" name="semester" required>
+      <button type="submit">Register</button>
+    </form>
+    <p>Already registered? <a href="/login">Login here</a></p>
+  </section>
+{% endblock %}

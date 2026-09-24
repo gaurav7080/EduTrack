@@ -1,0 +1,25 @@
+<div class="page-heading"><div><span class="eyebrow">PRODUCTIVITY</span><h1>Your goals</h1><p class="muted">Plan your study sessions and mark them complete.</p></div></div>
+<div class="mini-stats"><span><b><%= counts.total %></b> Total</span><span><b><%= counts.completed %></b> Completed</span><span><b><%= counts.pending %></b> Pending</span></div>
+<div class="two-col">
+<section class="panel sticky-panel">
+  <div class="panel-head"><div><h2>Add new goal</h2><p class="muted">What do you want to finish?</p></div></div>
+  <form action="/goals/add" method="post" class="form">
+    <label>Goal title <input type="text" name="title" placeholder="e.g. Complete DSA arrays" maxlength="255" required></label>
+    <label>Description <textarea name="description" placeholder="Optional details..."></textarea></label>
+    <div class="form-grid"><label>Subject <input type="text" name="subject" placeholder="DSA"></label><label>Date <input type="date" name="goal_date" value="<%= today %>" required></label></div>
+    <label>Target study time (minutes) <input type="number" name="target_minutes" min="0" max="1440" placeholder="60"></label>
+    <button class="btn btn-primary btn-full">Add goal</button>
+  </form>
+</section>
+<section class="panel">
+  <div class="panel-head"><div><h2>All goals</h2><p class="muted"><%= goals.length %> result(s)</p></div></div>
+  <form class="filter-bar" method="get"><input name="subject" value="<%= filters.subject %>" placeholder="Search subject"><select name="status"><option value="">All status</option><option value="pending" <%= filters.status==='pending'?'selected':'' %>>Pending</option><option value="completed" <%= filters.status==='completed'?'selected':'' %>>Completed</option></select><button class="btn btn-secondary">Filter</button><% if(filters.status||filters.subject){%><a class="clear-link" href="/goals">Clear</a><%}%></form>
+  <% if(goals.length){ %><div class="goal-table">
+    <% goals.forEach(g=>{ %><div class="goal-card <%= g.status==='completed'?'done':'' %>">
+      <form action="/goals/toggle/<%=g.id%>" method="post"><button class="check <%=g.status==='completed'?'checked':''%>"><%=g.status==='completed'?'✓':''%></button></form>
+      <div class="goal-info"><strong><%=g.title%></strong><p><%=g.description||'No description'%></p><span><%=g.subject||'General'%> · <%=formatDate(g.goal_date)%> · <%=g.target_minutes%> min</span></div>
+      <div class="actions"><a href="/goals/edit/<%=g.id%>">Edit</a><form action="/goals/delete/<%=g.id%>" method="post" onsubmit="return confirmDelete()"><button class="danger-link">Delete</button></form></div>
+    </div><% }) %>
+  </div><% } else { %><div class="empty-state"><div class="empty-icon">◎</div><h3>No matching goals</h3><p>Try a different filter or create a new goal.</p></div><% } %>
+</section>
+</div>

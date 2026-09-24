@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Welcome, {{ name }}</h1>
+  <p class="muted">{{ today }}</p>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Today's Goals</h3>
+      <p class="stat">{{ todays_total }}</p>
+    </div>
+    <div class="card">
+      <h3>Completed</h3>
+      <p class="stat">{{ todays_completed }}</p>
+    </div>
+    <div class="card">
+      <h3>Pending</h3>
+      <p class="stat">{{ todays_pending }}</p>
+    </div>
+    <div class="card">
+      <h3>Weekly Progress</h3>
+      <p class="stat">{{ weekly_progress }}%</p>
+    </div>
+  </div>
+
+  <section>
+    <h2>TODAY'S GOALS</h2>
+    <div class="goals-list">
+      {% if todays_goals %}
+        <table class="table">
+          <tr><th>Title</th><th>Subject</th><th>Status</th><th>Action</th></tr>
+          {% for g in todays_goals %}
+            <tr>
+              <td>{{ g.title }}</td>
+              <td>{{ g.subject }}</td>
+              <td>{{ g.status }}</td>
+              <td>
+                <form action="/goals/toggle/{{ g.id }}" method="post" style="display:inline">
+                  <button type="submit">Toggle</button>
+                </form>
+                <a href="/goals/edit/{{ g.id }}">Edit</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <p>No goals for today.</p>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,12 @@
+<header class="topbar">
+  <a class="brand" href="/dashboard"><span class="brand-mark">SP</span><span>Student<span>Progress</span></span></a>
+  <button class="mobile-menu" type="button" aria-label="Open menu" onclick="document.body.classList.toggle('menu-open')">☰</button>
+  <nav class="nav-links">
+    <a class="<%= currentPath === '/dashboard' ? 'active' : '' %>" href="/dashboard">Dashboard</a>
+    <a class="<%= currentPath.startsWith('/goals') ? 'active' : '' %>" href="/goals">Goals</a>
+    <a class="<%= currentPath.startsWith('/materials') ? 'active' : '' %>" href="/materials">Materials</a>
+    <a class="<%= currentPath === '/analysis' ? 'active' : '' %>" href="/analysis">Analysis</a>
+    <a class="<%= currentPath === '/profile' ? 'active' : '' %>" href="/profile">Profile</a>
+  </nav>
+  <div class="user-menu"><span class="avatar"><%= currentUser.charAt(0).toUpperCase() %></span><span class="user-name"><%= currentUser %></span><form action="/logout" method="post"><button class="logout-btn">Logout</button></form></div>
+</header>
